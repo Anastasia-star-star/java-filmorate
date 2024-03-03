@@ -18,7 +18,7 @@ class UserControllerTest {
         assertTrue(userController.validate(userOk));
     }
 
-    void validateFail(){
+    void validateFail() {
         final User userFail = new User(1, "aiarkhipova@yandex.ru", "",
                 LocalDateTime.now().minusYears(22));
         Exception exception = assertThrows(ValidationException.class, () -> userController.validate(userFail));
