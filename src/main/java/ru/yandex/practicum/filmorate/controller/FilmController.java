@@ -14,8 +14,8 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
     HashMap<Integer, Film> films = new HashMap<>();
-    public final static LocalDateTime DATE = LocalDateTime.of(1985, 12, 28, 0, 0);
-    public final static int LONG_OF_DESCRIPTION = 200;
+    public static final LocalDateTime DATE = LocalDateTime.of(1985, 12, 28, 0, 0);
+    public static final int LONG_OF_DESCRIPTION = 200;
 
     public boolean validate(Film film) throws ValidationException {
         if (film.getName().isBlank()) {
@@ -48,7 +48,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film UpdateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
             films.replace(film.getId(), film);
