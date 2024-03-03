@@ -14,7 +14,7 @@ import java.util.HashMap;
 @RequestMapping("/users")
 public class UserController {
     HashMap<Integer, User> users = new HashMap<>();
-    public final static LocalDateTime DATE = LocalDateTime.now();
+    public static final LocalDateTime DATE = LocalDateTime.now();
 
     public boolean validate(User user) throws ValidationException {
         if (user.getLogin().isBlank()) {
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User UpdateUser(@RequestBody User user) throws ValidationException {
+    public User updateUser(@RequestBody User user) throws ValidationException {
         if (validate(user)) {
             users.replace(user.getId(), user);
         }
