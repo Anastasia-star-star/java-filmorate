@@ -15,6 +15,7 @@ class UserControllerTest {
     void validateOK() throws ValidationException {
         final User userOk = new User(0, "aiarkhipova@yandex.ru", "la-la",
                 LocalDateTime.now().minusYears(22));
+        userOk.setName("Anastasia");
         assertTrue(userController.validate(userOk));
     }
 
