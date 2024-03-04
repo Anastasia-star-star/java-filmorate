@@ -29,8 +29,7 @@ public class FilmController {
             throw new ValidationException("Длительность фильма отрицательна");
         } else if (films.containsKey(film.getId())) {
             throw new ValidationException("id фильма уже существует");
-        }
-        else {
+        } else {
             return true;
         }
     }
