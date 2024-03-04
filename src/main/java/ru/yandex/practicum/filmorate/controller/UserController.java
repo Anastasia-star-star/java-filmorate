@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
 @RequestMapping("/users")
 public class UserController {
     HashMap<Integer, User> users = new HashMap<>();
-    public static final LocalDateTime DATE = LocalDateTime.now();
+    public static final LocalDate DATE = LocalDate.now();
 
     public boolean validate(User user) throws ValidationException {
         if (user.getLogin().isBlank()) {
@@ -27,6 +28,8 @@ public class UserController {
             throw new ValidationException("В электронной почте нет символа собачки");
         } else if (user.getBirthday().isAfter(DATE)) {
             throw new ValidationException("День рождения пользователя в будущем");
+        } else if (users.containsKey(user.getId())) {
+            throw new ValidationException("id пользователя уже существует");
         } else {
             if (user.getName().isBlank()) {
                 user.setName(user.getLogin());
@@ -44,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) throws ValidationException {
+    public User createUser(@Valid @RequestBody User user) throws ValidationException {
         if (validate(user)) {
             users.put(user.getId(), user);
         }
@@ -52,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);

@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
     HashMap<Integer, Film> films = new HashMap<>();
-    public static final LocalDateTime DATE = LocalDateTime.of(1985, 12, 28, 0, 0);
+    public static final LocalDate DATE = LocalDate.of(1985, 12, 28);
     public static final int LONG_OF_DESCRIPTION = 200;
 
     public boolean validate(Film film) throws ValidationException {
@@ -26,7 +27,10 @@ public class FilmController {
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
         } else if (film.getDuration() < 0) {
             throw new ValidationException("Длительность фильма отрицательна");
-        } else {
+        } else if (films.containsKey(film.getId())) {
+            throw new ValidationException("id фильма уже существует");
+        }
+        else {
             return true;
         }
     }
@@ -37,7 +41,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film createFilm(@RequestBody Film film) throws ValidationException {
+    public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
             films.put(film.getId(), film);
@@ -48,7 +52,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
             films.replace(film.getId(), film);
