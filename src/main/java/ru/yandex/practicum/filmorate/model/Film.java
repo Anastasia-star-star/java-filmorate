@@ -5,24 +5,24 @@ import lombok.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+
 public class Film {
     private int id;
 
-    @NonNull
     @NotBlank
     private String name;
 
-    @NonNull
     @Size(max = 200)
     private String description;
 
-    @NonNull
+    @NotNull
     private LocalDate releaseDate;
 
-    @NonNull
-    @Positive
+    @Min(1)
     private int duration;
 }
