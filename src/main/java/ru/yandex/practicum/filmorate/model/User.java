@@ -13,22 +13,18 @@ import java.time.LocalDate;
 @Setter
 @ToString(callSuper = true)
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Builder
+
 public class User {
     private int id;
 
     @NotEmpty
-    @NotNull
     @Email
     private String email;
 
-    @NotNull
     @NotBlank
     private String login;
 
-    @Builder.Default
-    private String name = "";
+    private String name;
 
     @NotNull
     private LocalDate birthday;
