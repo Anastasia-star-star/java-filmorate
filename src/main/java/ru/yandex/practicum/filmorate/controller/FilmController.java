@@ -13,7 +13,7 @@ import java.util.Collection;
 @Slf4j
 @RequestMapping("/films")
 public class FilmController {
-    public ManagerFilms manager = new ManagerFilms();
+    public final ManagerFilms manager = new ManagerFilms();
 
     @GetMapping
     public Collection<Film> getAllFilms() {

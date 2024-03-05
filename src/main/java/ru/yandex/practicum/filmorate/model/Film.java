@@ -14,15 +14,15 @@ import java.time.LocalDate;
 public class Film {
     private int id;
 
-    @NotBlank
+    @NotBlank(message = "Имя не должно быть пустым")
     private String name;
 
-    @Size(max = 200)
+    @Size(max = 200, message = "Описание не должно быть более 200 символов")
     private String description;
 
-    @NotNull
+    @NotNull(message = "Параметры даты должны быть заданы")
     private LocalDate releaseDate;
 
-    @Min(1)
+    @Positive(message = "Продолжительность фильма должна быть больше 0")
     private int duration;
 }

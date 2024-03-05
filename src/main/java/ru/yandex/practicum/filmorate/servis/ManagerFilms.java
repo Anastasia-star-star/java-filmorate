@@ -11,13 +11,13 @@ import java.util.HashMap;
 @Getter
 @Slf4j
 public class ManagerFilms {
-    private HashMap<Integer, Film> films = new HashMap<>();
+    private final HashMap<Integer, Film> films = new HashMap<>();
     private int nextId = 1;
-    public static final LocalDate DATE = LocalDate.of(1895, 12, 28);
-
+    private static final LocalDate DATE = LocalDate.of(1895, 12, 28);
 
     public boolean validate(Film film) throws ValidationException {
         if (film.getReleaseDate().isBefore(DATE)) {
+            log.info("Дата реализации фильма раньше допустимой даты");
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
         } else {
             return true;

@@ -12,9 +12,9 @@ import java.util.HashMap;
 @Slf4j
 @Getter
 public class ManagerUsers {
-    int nextId = 1;
-    public HashMap<Integer, User> users = new HashMap<>();
-    public static final LocalDate DATE = LocalDate.now();
+    private int nextId = 1;
+    private final HashMap<Integer, User> users = new HashMap<>();
+    private static final LocalDate DATE = LocalDate.now();
 
     public boolean validate(User user) throws ValidationException {
         if (user.getLogin().contains(" ")) {
