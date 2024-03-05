@@ -13,7 +13,7 @@ class FilmControllerTest {
 
     @Test
     void validateOK() throws ValidationException {
-        final Film validFilm = new Film(0, "Завтрак у Тифани", "Мелодрамма", LocalDate.now().minusYears(10), 58);
+        Film validFilm = new Film(0, "Завтрак у Тифани", "Мелодрамма", LocalDate.now().minusYears(10), 58);
         assertTrue(filmController.validate(validFilm));
     }
 

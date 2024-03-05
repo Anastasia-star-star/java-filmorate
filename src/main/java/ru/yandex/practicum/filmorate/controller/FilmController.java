@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -15,7 +16,8 @@ import java.util.HashMap;
 @RequestMapping("/films")
 public class FilmController {
     HashMap<Integer, Film> films = new HashMap<>();
-    public static final LocalDate DATE = LocalDate.of(1985, 12, 28);
+    int nextId = 1;
+    public static final LocalDate DATE = LocalDate.of(1895, 12, 28);
     public static final int LONG_OF_DESCRIPTION = 200;
 
     public boolean validate(Film film) throws ValidationException {
@@ -29,7 +31,8 @@ public class FilmController {
             throw new ValidationException("Длительность фильма отрицательна");
         } else if (films.containsKey(film.getId())) {
             throw new ValidationException("id фильма уже существует");
-        } else {
+        }
+        else {
             return true;
         }
     }
@@ -43,6 +46,7 @@ public class FilmController {
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
+            film.setId(nextId++);
             films.put(film.getId(), film);
         } else {
             log.info("Данные о фильме не были добавлены, так как не корректны");
@@ -54,9 +58,12 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
-            films.replace(film.getId(), film);
+            if (films.containsKey(film.getId())){
+                films.replace(film.getId(), film);
+            }
         } else {
             log.info("Данные о фильме не были добавлены, так как не корректны");
+
         }
         return film;
     }

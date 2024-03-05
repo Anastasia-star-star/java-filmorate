@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -14,7 +15,8 @@ import java.util.HashMap;
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
-    HashMap<Integer, User> users = new HashMap<>();
+    int nextid = 0;
+    public HashMap<Integer, User> users = new HashMap<>();
     public static final LocalDate DATE = LocalDate.now();
 
     public boolean validate(User user) throws ValidationException {
@@ -49,6 +51,7 @@ public class UserController {
     @PostMapping
     public User createUser(@Valid @RequestBody User user) throws ValidationException {
         if (validate(user)) {
+            user.setId(nextid++);
             users.put(user.getId(), user);
         }
         return user;
@@ -59,8 +62,6 @@ public class UserController {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);
-            } else {
-                users.put(user.getId(), user);
             }
         }
         return user;
