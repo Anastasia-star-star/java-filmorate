@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerFilmsTest {
     public final ManagerFilms manager = new ManagerFilms();
+
     @Test
     void validateOK() throws ValidationException {
         final Film validFilm = new Film(0, "Завтрак у Тифани",
