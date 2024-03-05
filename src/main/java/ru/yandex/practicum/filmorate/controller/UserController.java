@@ -20,20 +20,12 @@ public class UserController {
     public static final LocalDate DATE = LocalDate.now();
 
     public boolean validate(User user) throws ValidationException {
-        if (user.getLogin().isBlank()) {
-            throw new ValidationException("Пустое поле с логином");
-        } else if (user.getLogin().contains(" ")) {
+        if (user.getLogin().contains(" ")) {
             throw new ValidationException("В логине присутствуют пробелы");
-        } else if (user.getEmail().isBlank()) {
-            throw new ValidationException("Пустое поле с электронной почтой");
-        } else if (!user.getEmail().contains("@")) {
-            throw new ValidationException("В электронной почте нет символа собачки");
         } else if (user.getBirthday().isAfter(DATE)) {
             throw new ValidationException("День рождения пользователя в будущем");
-        } else if (users.containsKey(user.getId())) {
-            throw new ValidationException("id пользователя уже существует");
         } else {
-            if (user.getName().isBlank()) {
+            if (user.getName().isBlank() || user.getName() == null) {
                 user.setName(user.getLogin());
                 log.info("Имя пользователя пустое, будет использоваться логин");
             } else {

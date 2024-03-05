@@ -20,7 +20,6 @@ public class Film {
     private String description;
 
     @NonNull
-    @NotNull
     private LocalDate releaseDate;
 
     @NonNull

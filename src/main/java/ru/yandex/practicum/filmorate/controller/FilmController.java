@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -18,20 +19,10 @@ public class FilmController {
     HashMap<Integer, Film> films = new HashMap<>();
     int nextId = 1;
     public static final LocalDate DATE = LocalDate.of(1895, 12, 28);
-    public static final int LONG_OF_DESCRIPTION = 200;
 
     public boolean validate(Film film) throws ValidationException {
-        if (film.getName().isBlank()) {
-            throw new ValidationException("Поле с названием фильма пустое");
-        } else if (film.getDescription().length() > LONG_OF_DESCRIPTION) {
-            throw new ValidationException("Поле с описанием фильма превышает 200 символов");
-        } else if (film.getReleaseDate().isBefore(DATE)) {
-            throw new ValidationException("Дата реализации фильма раньше допустимой даты");
-        } else if (film.getDuration() < 0) {
-            throw new ValidationException("Длительность фильма отрицательна");
-        } else if (films.containsKey(film.getId())) {
-            throw new ValidationException("id фильма уже существует");
-        }
+        if (film.getReleaseDate().isBefore(DATE)) {
+            throw new ValidationException("Дата реализации фильма раньше допустимой даты");}
         else {
             return true;
         }
@@ -43,6 +34,7 @@ public class FilmController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (validate(film)) {
             log.info("Данные о фильме успешно добавлены");
