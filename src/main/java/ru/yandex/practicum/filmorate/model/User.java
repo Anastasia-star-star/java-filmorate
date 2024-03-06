@@ -18,14 +18,14 @@ public class User {
     private int id;
 
     @NotEmpty
-    @Email
+    @Email(message = "Почта не должна быть пустой")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Логин не может быть пустым")
     private String login;
 
     private String name;
 
-    @NotNull
+    @NotNull(message = "Дата должна быть верно заполнена")
     private LocalDate birthday;
 }
