@@ -18,21 +18,17 @@ public class ManagerUsers {
 
     public boolean validate(User user) throws ValidationException {
         if (user.getLogin().contains(" ")) {
+            log.info("В логине присутствуют пробелы");
             throw new ValidationException("В логине присутствуют пробелы");
         } else if (user.getBirthday().isAfter(DATE)) {
+            log.info("День рождения пользователя в будущем");
             throw new ValidationException("День рождения пользователя в будущем");
         } else {
-            if (user.getName() == null) {
+            if (user.getName() == null || user.getName().isBlank()) {
                 user.setName(user.getLogin());
                 log.info("Имя пользователя пустое, будет использоваться логин");
-            } else {
-                if (user.getName().isBlank()) {
-                    user.setName(user.getLogin());
-                    log.info("Имя пользователя пустое, будет использоваться логин");
-                } else {
-                    log.info("Данные корректно заполнены");
-                }
             }
+            log.info("Данные корректно заполнены");
             return true;
         }
     }

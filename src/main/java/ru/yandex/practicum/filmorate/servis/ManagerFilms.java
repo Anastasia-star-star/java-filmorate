@@ -39,6 +39,7 @@ public class ManagerFilms {
                 films.replace(film.getId(), film);
                 log.info("Данные о фильме успешно добавлены");
             } else {
+                log.info("id не найдено");
                 throw new ValidationException("id не найдено");
             }
         }
