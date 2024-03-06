@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.servis;
+package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 @Slf4j
 @Getter
-public class ManagerUsers {
+public class ServiceUsers {
     private int nextId = 1;
     private final HashMap<Integer, User> users = new HashMap<>();
     private static final LocalDate DATE = LocalDate.now();
@@ -28,7 +28,7 @@ public class ManagerUsers {
                 user.setName(user.getLogin());
                 log.info("Имя пользователя пустое, будет использоваться логин");
             }
-            log.info("Данные корректно заполнены");
+            log.info("Инициализировано добавление фильма");
             return true;
         }
     }
@@ -41,8 +41,7 @@ public class ManagerUsers {
         return user;
     }
 
-    @PutMapping
-    public void makeUpdateUser(User user) throws ValidationException {
+    public User makeUpdateUser(User user) throws ValidationException {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);
@@ -51,5 +50,6 @@ public class ManagerUsers {
                 throw new ValidationException("id don't exist");
             }
         }
+        return user;
     }
 }

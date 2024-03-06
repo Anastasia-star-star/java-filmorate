@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.servis.ManagerFilms;
+import ru.yandex.practicum.filmorate.service.ServiceFilms;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 @Slf4j
 @RequestMapping("/films")
 public class FilmController {
-    private final ManagerFilms manager = new ManagerFilms();
+    private final ServiceFilms manager = new ServiceFilms();
 
     @GetMapping
     public Collection<Film> getAllFilms() {

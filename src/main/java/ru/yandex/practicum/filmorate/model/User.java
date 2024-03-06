@@ -8,12 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-
 @Getter
 @Setter
 @ToString(callSuper = true)
 @AllArgsConstructor
-
 public class User {
     private int id;
 
@@ -26,6 +24,5 @@ public class User {
 
     private String name;
 
-    @NotNull(message = "Дата должна быть верно заполнена")
     private LocalDate birthday;
 }

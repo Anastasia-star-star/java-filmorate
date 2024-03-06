@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.servis.ManagerUsers;
+import ru.yandex.practicum.filmorate.service.ServiceUsers;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
-    private final ManagerUsers manager = new ManagerUsers();
+    private final ServiceUsers manager = new ServiceUsers();
 
     @GetMapping
     public Collection<User> getAllUsers() {

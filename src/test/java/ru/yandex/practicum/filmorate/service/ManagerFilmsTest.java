@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.servis;
+package ru.yandex.practicum.filmorate.service;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerFilmsTest {
-    public final ManagerFilms manager = new ManagerFilms();
+    public final ServiceFilms manager = new ServiceFilms();
 
     @Test
     void validateOK() throws ValidationException {

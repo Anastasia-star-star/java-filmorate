@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.servis;
+package ru.yandex.practicum.filmorate.service;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ManagerUsersTest {
 
-    public final ManagerUsers manager = new ManagerUsers();
+    public final ServiceUsers manager = new ServiceUsers();
 
     @Test
     void validateOK() throws ValidationException {

@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Film {
     private int id;
 
     @NotBlank(message = "Имя не должно быть пустым")
     private String name;
 
+    @NotBlank(message = "Описание не должно быть пустым")
     @Size(max = 200, message = "Описание не должно быть более 200 символов")
     private String description;
 
