@@ -19,7 +19,7 @@ public class ServiceFilms {
         if (film.getReleaseDate().isBefore(DATE)) {
             log.info("Дата реализации фильма раньше допустимой даты");
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
-        }else {
+        } else {
             return true;
         }
     }
