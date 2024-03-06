@@ -13,7 +13,7 @@ import java.util.Collection;
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
-    public final ManagerUsers manager = new ManagerUsers();
+    private final ManagerUsers manager = new ManagerUsers();
 
     @GetMapping
     public Collection<User> getAllUsers() {
