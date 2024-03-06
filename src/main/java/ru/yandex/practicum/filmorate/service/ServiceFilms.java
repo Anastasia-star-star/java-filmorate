@@ -26,10 +26,9 @@ public class ServiceFilms {
 
     public Film addNewFilm(Film film) throws ValidationException {
         if (validate(film)) {
-            log.info("Данные о фильме успешно добавлены");
             film.setId(nextId++);
             films.put(film.getId(), film);
-            log.info("Данные о фильме успешно добавлены");
+            log.info("Инициализировано добавление фильма");
         }
         return film;
     }
