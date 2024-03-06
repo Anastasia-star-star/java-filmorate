@@ -47,6 +47,7 @@ public class ManagerUsers {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);
             } else {
+                log.info("id don't exist");
                 throw new ValidationException("id don't exist");
             }
         }
