@@ -21,12 +21,12 @@ public class FilmController {
     }
 
     @PostMapping
-    public void createFilm(@Valid @RequestBody Film film) throws ValidationException {
-        manager.addNewFilm(film);
+    public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
+        return manager.addNewFilm(film);
     }
 
     @PutMapping
-    public void updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        manager.makeUpdateFilm(film);
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
+        return manager.makeUpdateFilm(film);
     }
 }
