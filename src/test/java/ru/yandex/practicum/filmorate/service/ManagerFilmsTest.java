@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ManagerFilmsTest {
-    public final ServiceFilms manager = new ServiceFilms();
+    public final FilmService manager = new FilmService();
 
     @Test
     void validateOK() throws ValidationException {

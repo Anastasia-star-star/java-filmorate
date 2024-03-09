@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ManagerUsersTest {
 
-    public final ServiceUsers manager = new ServiceUsers();
+    public final UserService manager = new UserService();
 
     @Test
     void validateOK() throws ValidationException {

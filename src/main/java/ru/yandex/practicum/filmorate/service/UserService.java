@@ -3,14 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 
 @Slf4j
 @Getter
-public class ServiceUsers {
+public class UserService {
     private int nextId = 1;
     private final HashMap<Integer, User> users = new HashMap<>();
     private static final LocalDate DATE = LocalDate.now();
@@ -32,7 +34,11 @@ public class ServiceUsers {
         }
     }
 
-    public User addNewUser(User user) throws ValidationException {
+    public Collection<User> getAll() {
+        return users.values();
+    }
+
+    public User createUser(User user) throws ValidationException {
         if (validate(user)) {
             user.setId(nextId++);
             users.put(user.getId(), user);
@@ -40,7 +46,7 @@ public class ServiceUsers {
         return user;
     }
 
-    public User makeUpdateUser(User user) throws ValidationException {
+    public User updateUser(User user) throws ValidationException {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);

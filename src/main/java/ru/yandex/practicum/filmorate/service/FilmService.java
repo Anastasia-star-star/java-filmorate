@@ -6,11 +6,12 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 
 @Getter
 @Slf4j
-public class ServiceFilms {
+public class FilmService {
     private final HashMap<Integer, Film> films = new HashMap<>();
     private int nextId = 1;
     private static final LocalDate DATE = LocalDate.of(1895, 12, 28);
@@ -24,7 +25,11 @@ public class ServiceFilms {
         }
     }
 
-    public Film addNewFilm(Film film) throws ValidationException {
+    public Collection<Film> getAll() {
+        return films.values();
+    }
+
+    public Film createFilm(Film film) throws ValidationException {
         if (validate(film)) {
             film.setId(nextId++);
             films.put(film.getId(), film);
@@ -33,7 +38,7 @@ public class ServiceFilms {
         return film;
     }
 
-    public Film makeUpdateFilm(Film film) throws ValidationException {
+    public Film updateFilm(Film film) throws ValidationException {
         if (validate(film)) {
             if (films.containsKey(film.getId())) {
                 films.replace(film.getId(), film);
