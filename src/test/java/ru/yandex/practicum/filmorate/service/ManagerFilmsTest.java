@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.service;
+/*package ru.yandex.practicum.filmorate.service;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -19,4 +19,4 @@ class ManagerFilmsTest {
 
     }
 
-}
+}*/

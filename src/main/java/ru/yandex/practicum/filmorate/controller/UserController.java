@@ -1,19 +1,46 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
 @Slf4j
 @RequestMapping("/users")
+//@Component
 public class UserController {
-    private final UserService manager = new UserService();
+    private final InMemoryUserStorage manager = new InMemoryUserStorage();
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable("id") Integer id) {
+        return manager.getUserById(id);
+    }
+
+    @GetMapping("/{id}/friends")
+    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) {
+        return manager.getFriendsById(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public ArrayList<User> getCommonFriends(@PathVariable("id") Integer id,
+                                            @PathVariable("otherId") Integer otherId) {
+        return manager.getCommonFriends(id, otherId);
+    }
 
     @GetMapping
     public Collection<User> getAllUsers() {
@@ -28,5 +55,17 @@ public class UserController {
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
         return manager.updateUser(user);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public User addInFriends(@PathVariable("id") Integer id,
+                             @PathVariable("friendId") Integer friendId) throws ValidationException {
+        return manager.addInFriends(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public User deleteFromFriends(@PathVariable("id") Integer id,
+                                  @PathVariable("friendId") Integer friendId) throws ValidationException {
+        return manager.deleteFromFriend(id, friendId);
     }
 }
