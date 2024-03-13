@@ -2,15 +2,12 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Getter
 @Slf4j
@@ -30,8 +27,9 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
-    public Collection<Film> getAll() {
-        return films.values();
+    @Override
+    public ArrayList<Film> getFilms() {
+        return new ArrayList<>(films.values());
     }
 
     @Override
@@ -57,44 +55,4 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
         return film;
     }
-
-    @Override
-    public Film deleteFilm(Film film) throws ValidationException {
-        //
-        return film;
-    }
-
-    public Film putLike(Integer id, Integer userId) throws ValidationException {
-        Set<Integer> userLikes = new HashSet<>();
-        if (films.get(id).getUserLikes() != null) {
-            userLikes = films.get(id).getUserLikes();
-        }
-        userLikes.add(userId);
-        films.get(id).setUserLikes(userLikes);
-        return films.get(id);
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Film deleteLike(Integer id, Integer userId) throws ValidationException {
-        Set<Integer> userLikes = new HashSet<>();
-        if (films.get(id).getUserLikes() == null) {
-            log.info("Лайков для удаления нет");
-            throw new ValidationException("");
-        }
-        userLikes = films.get(id).getUserLikes();
-        userLikes.remove(userId);
-        films.get(id).setUserLikes(userLikes);
-        return films.get(id);
-    }
-
-    public List<Film> getTopPopularFilms(Integer count) {
-        if (count < 0) {
-            log.error("Количество фильмов не должно быть отрицательным");
-        }
-        return films.values().stream()
-                .sorted((f1, f2) -> f2.getUserLikes().size() - f1.getUserLikes().size())
-                .limit(count)
-                .collect(Collectors.toList());
-    }
-
 }

@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Collection;
 
 @RestController
 @Slf4j
@@ -40,7 +39,7 @@ public class UserController {
     @GetMapping("/{id}/friends/common/{otherId}")
     public ArrayList<User> getCommonFriends(@PathVariable("id") Integer id,
                                             @PathVariable("otherId") Integer otherId) {
-        return manager.getCommonFriends(id, otherId);
+        return userService.getCommonFriends(id, otherId);
     }
 
     @GetMapping
@@ -67,6 +66,6 @@ public class UserController {
     @DeleteMapping("/{id}/friends/{friendId}")
     public User deleteFromFriends(@PathVariable("id") Integer id,
                                   @PathVariable("friendId") Integer friendId) throws ValidationException {
-        return manager.deleteFromFriend(id, friendId);
+        return userService.deleteFromFriend(id, friendId);
     }
 }

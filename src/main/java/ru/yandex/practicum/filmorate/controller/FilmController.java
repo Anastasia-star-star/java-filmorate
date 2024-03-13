@@ -9,7 +9,7 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import javax.validation.Valid;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,19 +25,18 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-
     @GetMapping
-    public Collection<Film> getAllFilms() {
-        return manager.getAll();
+    public ArrayList<Film> getAllFilms() {
+        return manager.getFilms();
     }
 
     @GetMapping("/popular")
     public List<Film> getTopPopularFilms(@RequestParam(required = false) Integer count) {
         if (count == null) {
             log.info("Получен запрос к эндпоинту /films/popular");
-            return manager.getTopPopularFilms(10);
+            return filmService.getTopPopularFilms(10);
         }
-        return manager.getTopPopularFilms(count);
+        return filmService.getTopPopularFilms(count);
     }
 
     @PostMapping
@@ -53,12 +52,12 @@ public class FilmController {
     @PutMapping("/{id}/like/{userId}")
     public Film putLike(@PathVariable("id") Integer id,
                         @PathVariable("userId") Integer userId) throws ValidationException {
-        return manager.putLike(id, userId);
+        return filmService.putLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public Film deleteLike(@PathVariable("id") Integer id,
                            @PathVariable("userId") Integer userId) throws ValidationException {
-        return manager.deleteLike(id, userId);
+        return filmService.deleteLike(id, userId);
     }
 }
