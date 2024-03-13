@@ -9,4 +9,6 @@ public interface FilmStorage {
     Film deleteFilm(Film film) throws ValidationException;
 
     Film updateFilm(Film film) throws ValidationException;
+
+
 }

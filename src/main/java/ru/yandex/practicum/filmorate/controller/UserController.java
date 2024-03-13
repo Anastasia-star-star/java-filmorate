@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -16,7 +17,7 @@ import java.util.Collection;
 @RestController
 @Slf4j
 @RequestMapping("/users")
-//@Component
+@Component
 public class UserController {
     private final InMemoryUserStorage manager = new InMemoryUserStorage();
     private final UserService userService;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) {
+    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) throws ValidationException {
         return manager.getFriendsById(id);
     }
 
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @GetMapping
-    public Collection<User> getAllUsers() {
-        return manager.getAll();
+    public ArrayList<User> getAllUsers() {
+        return manager.getUsers();
     }
 
     @PostMapping
@@ -60,7 +61,7 @@ public class UserController {
     @PutMapping("/{id}/friends/{friendId}")
     public User addInFriends(@PathVariable("id") Integer id,
                              @PathVariable("friendId") Integer friendId) throws ValidationException {
-        return manager.addInFriends(id, friendId);
+        return userService.addInFriends(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")

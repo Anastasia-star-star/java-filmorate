@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -36,7 +37,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     public ArrayList<User> getFriendsById(Integer id) {
         if (users.get(id).getFriends() == null) {
-            return new ArrayList<>();
         }
         ArrayList<User> listUsers = new ArrayList<>();
         for (int ind : users.get(id).getFriends()) {
@@ -62,8 +62,9 @@ public class InMemoryUserStorage implements UserStorage {
         return users.get(id);
     }
 
-    public Collection<User> getAll() {
-        return users.values();
+    @Override
+    public ArrayList<User> getUsers() {
+        return new ArrayList<>(users.values());
     }
 
     @Override
@@ -91,23 +92,6 @@ public class InMemoryUserStorage implements UserStorage {
             }
         }
         return user;
-    }
-
-    public User addInFriends(Integer id, Integer friendId) throws ValidationException {
-        Set<Integer> setByUser1 = users.get(id).getFriends();
-        Set<Integer> setByUser2 = users.get(friendId).getFriends();
-        if (setByUser1 == null) {
-            setByUser1 = new HashSet<>();
-        }
-        if (setByUser2 == null) {
-            setByUser2 = new HashSet<>();
-        }
-        setByUser1.add(friendId);
-        users.get(id).setFriends(setByUser1);
-
-        setByUser2.add(id);
-        users.get(friendId).setFriends(setByUser2);
-        return users.get(id);
     }
 
     public User deleteFromFriend(Integer id, Integer friendId) throws ValidationException {
