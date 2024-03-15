@@ -73,7 +73,7 @@ public class UserService {
         return userStorage.getUsers();
     }
 
-    public ArrayList<User> getFriendsById(Integer id) {
+    public ArrayList<User> getFriendsById(Integer id) throws ValidationException{
         return userStorage.getFriendsById(id);
     }
 
