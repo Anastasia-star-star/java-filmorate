@@ -16,5 +16,5 @@ public interface UserStorage {
 
     User getUserById(Integer id);
 
-    ArrayList<User> getFriendsById(Integer id);
+    ArrayList<User> getFriendsById(Integer id) throws ValidationException;
 }
