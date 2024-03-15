@@ -43,7 +43,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public ArrayList<User> getFriendsById(Integer id) throws ValidationException{
+    public ArrayList<User> getFriendsById(Integer id) throws ValidationException {
         if (users.get(id).getFriends() == null) {
             throw new ValidationException("");
         }
