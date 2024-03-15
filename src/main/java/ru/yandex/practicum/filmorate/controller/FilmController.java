@@ -2,11 +2,11 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -15,9 +15,8 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/films")
-//@Component
+@Component
 public class FilmController {
-    private final InMemoryFilmStorage manager = new InMemoryFilmStorage();
     private final FilmService filmService;
 
     @Autowired
@@ -27,7 +26,7 @@ public class FilmController {
 
     @GetMapping
     public ArrayList<Film> getAllFilms() {
-        return manager.getFilms();
+        return filmService.getFilms();
     }
 
     @GetMapping("/popular")
@@ -41,12 +40,12 @@ public class FilmController {
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return manager.createFilm(film);
+        return filmService.createFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
-        return manager.updateFilm(film);
+        return filmService.updateFilm(film);
     }
 
     @PutMapping("/{id}/like/{userId}")

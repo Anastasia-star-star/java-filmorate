@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.users;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +23,9 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public boolean validate(User user) throws ValidationException {
+        if (user == null) {
+            throw new ValidationException("");
+        }
         if (user.getLogin().contains(" ")) {
             log.info("В логине присутствуют пробелы");
             throw new ValidationException("В логине присутствуют пробелы");
@@ -39,6 +42,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
+    @Override
     public ArrayList<User> getFriendsById(Integer id) {
         if (users.get(id).getFriends() == null) {
         }
@@ -49,6 +53,7 @@ public class InMemoryUserStorage implements UserStorage {
         return listUsers;
     }
 
+    @Override
     public User getUserById(Integer id) {
         return users.get(id);
     }
@@ -62,6 +67,7 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
+    @Override
     public User updateUser(User user) throws ValidationException {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
@@ -73,5 +79,4 @@ public class InMemoryUserStorage implements UserStorage {
         }
         return user;
     }
-
 }

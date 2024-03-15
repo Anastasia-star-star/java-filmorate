@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.films;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     private static final LocalDate DATE = LocalDate.of(1895, 12, 28);
 
     public boolean validate(Film film) throws ValidationException {
+        if (film == null) {
+            throw new ValidationException("Дата реализации фильма раньше допустимой даты");
+        }
         if (film.getReleaseDate().isBefore(DATE)) {
             log.info("Дата реализации фильма раньше допустимой даты");
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
