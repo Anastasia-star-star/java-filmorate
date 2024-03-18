@@ -36,11 +36,11 @@ public class FilmService {
     }
 
     public Film putLike(Integer id, Integer userId) {
-        if (!filmStorage.getHashMapFilms().containsKey(id)){
+        if (!filmStorage.getHashMapFilms().containsKey(id)) {
             log.error("Передан несуществующий id фильма");
             throw new ObjectDoNotExistException("Передан несуществующий id фильма");
         }
-        if (!userStorage.getHashMapUsers().containsKey(userId)){
+        if (!userStorage.getHashMapUsers().containsKey(userId)) {
             log.error("Передан несуществующий id пользователя");
             throw new ObjectDoNotExistException("Передан несуществующий id пользователя");
         }
@@ -55,11 +55,11 @@ public class FilmService {
     }
 
     public Film deleteLike(Integer id, Integer userId) {
-        if (!filmStorage.getHashMapFilms().containsKey(id)){
+        if (!filmStorage.getHashMapFilms().containsKey(id)) {
             log.error("Передан несуществующий id фильма");
             throw new ObjectDoNotExistException("Передан несуществующий id фильма");
         }
-        if (!userStorage.getHashMapUsers().containsKey(userId)){
+        if (!userStorage.getHashMapUsers().containsKey(userId)) {
             log.error("Передан несуществующий id пользователя");
             throw new ObjectDoNotExistException("Передан несуществующий id пользователя");
         }

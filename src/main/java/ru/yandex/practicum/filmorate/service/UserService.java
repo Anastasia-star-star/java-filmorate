@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public User addInFriends(Integer id, Integer friendId) {
-        if (!userStorage.getHashMapUsers().containsKey(id) || ! userStorage.getHashMapUsers().containsKey(friendId)){
+        if (!userStorage.getHashMapUsers().containsKey(id) || !userStorage.getHashMapUsers().containsKey(friendId)) {
             log.error("Передан несуществующий id");
             throw new ObjectDoNotExistException("Передан несуществующий id");
         }
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public User deleteFromFriend(Integer id, Integer friendId) {
-        if (!userStorage.getHashMapUsers().containsKey(id) || ! userStorage.getHashMapUsers().containsKey(friendId)){
+        if (!userStorage.getHashMapUsers().containsKey(id) || !userStorage.getHashMapUsers().containsKey(friendId)) {
             log.error("Передан несуществующий id");
             throw new ObjectDoNotExistException("Передан несуществующий id");
         }
@@ -69,7 +69,7 @@ public class UserService {
     }
 
     public ArrayList<User> getCommonFriends(Integer id, Integer otherId) {
-        if (!userStorage.getHashMapUsers().containsKey(id) || ! userStorage.getHashMapUsers().containsKey(otherId)){
+        if (!userStorage.getHashMapUsers().containsKey(id) || !userStorage.getHashMapUsers().containsKey(otherId)) {
             log.error("Передан несуществующий id");
             throw new ObjectDoNotExistException("Передан несуществующий id");
         }
