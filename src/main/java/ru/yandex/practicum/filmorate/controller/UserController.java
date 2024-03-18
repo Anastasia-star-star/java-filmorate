@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -28,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) throws ValidationException {
+    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) {
         return userService.getFriendsById(id);
     }
 
@@ -44,24 +43,24 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) throws ValidationException {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) {
         return userService.updateUser(user);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public User addInFriends(@PathVariable("id") Integer id,
-                             @PathVariable("friendId") Integer friendId) throws ValidationException {
+                             @PathVariable("friendId") Integer friendId) {
         return userService.addInFriends(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public User deleteFromFriends(@PathVariable("id") Integer id,
-                                  @PathVariable("friendId") Integer friendId) throws ValidationException {
+                                  @PathVariable("friendId") Integer friendId) {
         return userService.deleteFromFriend(id, friendId);
     }
 }

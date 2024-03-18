@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.users;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.ObjectDoNotExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -18,11 +19,16 @@ public class InMemoryUserStorage implements UserStorage {
     private static final LocalDate DATE = LocalDate.now();
 
     @Override
+    public HashMap<Integer, User> getHashMapUsers() {
+        return users;
+    }
+
+    @Override
     public ArrayList<User> getUsers() {
         return new ArrayList<>(users.values());
     }
 
-    public boolean validate(User user) throws ValidationException {
+    public boolean validate(User user) {
         if (user == null) {
             throw new ValidationException("");
         }
@@ -43,7 +49,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public ArrayList<User> getFriendsById(Integer id) throws ValidationException {
+    public ArrayList<User> getFriendsById(Integer id) {
         if (users.get(id).getFriends() == null) {
             throw new ValidationException("");
         }
@@ -60,7 +66,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User createUser(User user) throws ValidationException {
+    public User createUser(User user) {
         if (validate(user)) {
             user.setId(nextId++);
             users.put(user.getId(), user);
@@ -69,13 +75,13 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User updateUser(User user) throws ValidationException {
+    public User updateUser(User user) {
         if (validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);
             } else {
                 log.info("id don't exist");
-                throw new ValidationException("id don't exist");
+                throw new ObjectDoNotExistException("id don't exist");
             }
         }
         return user;

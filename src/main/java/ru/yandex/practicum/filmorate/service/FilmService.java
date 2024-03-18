@@ -27,30 +27,30 @@ public class FilmService {
         return filmStorage.getFilms();
     }
 
-    public Film createFilm(Film film) throws ValidationException {
+    public Film createFilm(Film film) {
         return filmStorage.createFilm(film);
     }
 
-    public Film putLike(Integer id, Integer userId) throws ValidationException {
+    public Film putLike(Integer id, Integer userId) {
         Set<Integer> userLikes = new HashSet<>();
-        if (getFilms().get(id).getUserLikes() != null) {
-            userLikes = getFilms().get(id).getUserLikes();
+        if (filmStorage.getHashMapFilms().get(id).getUserLikes() != null) {
+            userLikes = filmStorage.getHashMapFilms().get(id).getUserLikes();
         }
         userLikes.add(userId);
-        getFilms().get(id).setUserLikes(userLikes);
-        return getFilms().get(id);
+        filmStorage.getHashMapFilms().get(id).setUserLikes(userLikes);
+        return filmStorage.getHashMapFilms().get(id);
     }
 
-    public Film deleteLike(Integer id, Integer userId) throws ValidationException {
-        Set<Integer> userLikes = new HashSet<>();
-        if (getFilms().get(id).getUserLikes() == null) {
+    public Film deleteLike(Integer id, Integer userId) {
+        Set<Integer> userLikes;
+        if (filmStorage.getHashMapFilms().get(id).getUserLikes() == null) {
             log.info("Лайков для удаления нет");
             throw new ValidationException("");
         }
-        userLikes = getFilms().get(id).getUserLikes();
+        userLikes = filmStorage.getHashMapFilms().get(id).getUserLikes();
         userLikes.remove(userId);
-        getFilms().get(id).setUserLikes(userLikes);
-        return getFilms().get(id);
+        filmStorage.getHashMapFilms().get(id).setUserLikes(userLikes);
+        return filmStorage.getHashMapFilms().get(id);
     }
 
     public List<Film> getTopPopularFilms(Integer count) {
@@ -63,7 +63,7 @@ public class FilmService {
                 .collect(Collectors.toList());
     }
 
-    public Film updateFilm(Film film) throws ValidationException {
+    public Film updateFilm(Film film) {
         return filmStorage.updateFilm(film);
     }
 }

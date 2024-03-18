@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.storage.films;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.ObjectDoNotExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -18,7 +19,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     private int nextId = 1;
     private static final LocalDate DATE = LocalDate.of(1895, 12, 28);
 
-    public boolean validate(Film film) throws ValidationException {
+    public boolean validate(Film film) {
         if (film == null) {
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
         }
@@ -31,12 +32,17 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public HashMap<Integer, Film> getHashMapFilms() {
+        return films;
+    }
+
+    @Override
     public ArrayList<Film> getFilms() {
         return new ArrayList<>(films.values());
     }
 
     @Override
-    public Film createFilm(Film film) throws ValidationException {
+    public Film createFilm(Film film) {
         if (validate(film)) {
             film.setId(nextId++);
             films.put(film.getId(), film);
@@ -46,14 +52,14 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film updateFilm(Film film) throws ValidationException {
+    public Film updateFilm(Film film) {
         if (validate(film)) {
             if (films.containsKey(film.getId())) {
                 films.replace(film.getId(), film);
                 log.info("Инициализировано добавление фильма");
             } else {
                 log.info("id не найдено");
-                throw new ValidationException("id не найдено");
+                throw new ObjectDoNotExistException("id не найдено");
             }
         }
         return film;
