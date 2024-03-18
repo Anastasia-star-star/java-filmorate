@@ -21,10 +21,11 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     public boolean validate(Film film) {
         if (film == null) {
-            throw new ValidationException("Дата реализации фильма раньше допустимой даты");
+            log.error("Передан пустой объект");
+            throw new ValidationException("Передан пустой объект");
         }
         if (film.getReleaseDate().isBefore(DATE)) {
-            log.info("Дата реализации фильма раньше допустимой даты");
+            log.error("Дата реализации фильма раньше допустимой даты");
             throw new ValidationException("Дата реализации фильма раньше допустимой даты");
         } else {
             return true;
@@ -46,8 +47,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (validate(film)) {
             film.setId(nextId++);
             films.put(film.getId(), film);
-            log.info("Инициализировано добавление фильма");
         }
+        log.info("Инициализировано добавление фильма");
         return film;
     }
 
@@ -56,10 +57,10 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (validate(film)) {
             if (films.containsKey(film.getId())) {
                 films.replace(film.getId(), film);
-                log.info("Инициализировано добавление фильма");
+                log.info("Инициализировано обновление фильма");
             } else {
-                log.info("id не найдено");
-                throw new ObjectDoNotExistException("id не найдено");
+                log.error("Передан несуществующий объект");
+                throw new ObjectDoNotExistException("Передан несуществующий объект при обновлении фильма");
             }
         }
         return film;

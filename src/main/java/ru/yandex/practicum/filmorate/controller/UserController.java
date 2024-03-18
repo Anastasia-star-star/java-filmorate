@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @Slf4j
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ArrayList<User> getAllUsers() {
+    public Collection<User> getAllUsers() {
         return userService.getUsers();
     }
 
