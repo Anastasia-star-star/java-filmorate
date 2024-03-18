@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController {
     private final FilmService filmService;
+    private static final int COUNT_OF_FILMS_DEFAULT = 10;
 
     @Autowired
     public FilmController(FilmService filmService) {
@@ -30,7 +31,7 @@ public class FilmController {
     public List<Film> getTopPopularFilms(@RequestParam(required = false) Integer count) {
         if (count == null) {
             log.info("Получен запрос к эндпоинту /films/popular");
-            return filmService.getTopPopularFilms(10);
+            return filmService.getTopPopularFilms(COUNT_OF_FILMS_DEFAULT);
         }
         return filmService.getTopPopularFilms(count);
     }
@@ -43,17 +44,5 @@ public class FilmController {
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         return filmService.updateFilm(film);
-    }
-
-    @PutMapping("/{id}/like/{userId}")
-    public Film putLike(@PathVariable("id") Integer id,
-                        @PathVariable("userId") Integer userId) {
-        return filmService.putLike(id, userId);
-    }
-
-    @DeleteMapping("/{id}/like/{userId}")
-    public Film deleteLike(@PathVariable("id") Integer id,
-                           @PathVariable("userId") Integer userId) {
-        return filmService.deleteLike(id, userId);
     }
 }
