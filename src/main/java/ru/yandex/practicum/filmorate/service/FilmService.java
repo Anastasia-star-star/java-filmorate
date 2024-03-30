@@ -1,54 +1,50 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.films.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.users.UserStorage;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Getter
+@Service
 @Slf4j
 public class FilmService {
-    private final HashMap<Integer, Film> films = new HashMap<>();
-    private int nextId = 1;
-    private static final LocalDate DATE = LocalDate.of(1895, 12, 28);
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
-    public boolean validate(Film film) throws ValidationException {
-        if (film.getReleaseDate().isBefore(DATE)) {
-            log.info("Дата реализации фильма раньше допустимой даты");
-            throw new ValidationException("Дата реализации фильма раньше допустимой даты");
-        } else {
-            return true;
+    @Autowired
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
+        this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
+    }
+
+    public ArrayList<Film> getFilms() {
+        return filmStorage.getFilms();
+    }
+
+    public Film createFilm(Film film) {
+        return filmStorage.createFilm(film);
+    }
+
+    public List<Film> getTopPopularFilms(Integer count) {
+        if (count < 0) {
+            log.error("Количество фильмов не должно быть отрицательным");
+            throw new ValidationException("Количество фильмов не должно быть отрицательным");
         }
+        log.info("Инициализированно получение популярных фильмов");
+        return getFilms().stream()
+                .sorted((f1, f2) -> f2.getUserLikes().size() - f1.getUserLikes().size())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
-    public Collection<Film> getAll() {
-        return films.values();
+    public Film updateFilm(Film film) {
+        return filmStorage.updateFilm(film);
     }
-
-    public Film createFilm(Film film) throws ValidationException {
-        if (validate(film)) {
-            film.setId(nextId++);
-            films.put(film.getId(), film);
-            log.info("Инициализировано добавление фильма");
-        }
-        return film;
-    }
-
-    public Film updateFilm(Film film) throws ValidationException {
-        if (validate(film)) {
-            if (films.containsKey(film.getId())) {
-                films.replace(film.getId(), film);
-                log.info("Инициализировано добавление фильма");
-            } else {
-                log.info("id не найдено");
-                throw new ValidationException("id не найдено");
-            }
-        }
-        return film;
-    }
-
 }
