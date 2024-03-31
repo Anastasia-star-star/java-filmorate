@@ -1,41 +1,87 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.users.UserStorage;
+import ru.yandex.practicum.filmorate.storage.FriendStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Service
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class UserService {
+
+    @Qualifier("userDbStorage")
     private final UserStorage userStorage;
+    @Qualifier("friendDbStorage")
+    private final FriendStorage friendStorage;
 
-    @Autowired
-    public UserService(UserStorage useStorage) {
-        this.userStorage = useStorage;
+    public User create(User user) {
+        return userStorage.create(user).get();
     }
 
-
-    public User createUser(User user) {
-        return userStorage.createUser(user);
+    public User update(User user) {
+        if (findUserById(user.getId()) == null) {
+            return null;
+        }
+        return userStorage.update(user).get();
     }
 
-    public User updateUser(User user) {
-        return userStorage.updateUser(user);
+    public boolean delete(User user) {
+        return userStorage.delete(user);
     }
 
-    public ArrayList<User> getUsers() {
-        return userStorage.getUsers();
+    public List<User> findUsers() {
+        return userStorage.findUsers();
     }
 
-    public ArrayList<User> getFriendsById(Integer id) {
-        return userStorage.getFriendsById(id);
+    public User findUserById(long userId) {
+        return userStorage.findUserById(userId).get();
     }
 
-    public User getUserById(Integer id) {
-        return userStorage.getUserById(id);
+    public boolean addInFriends(long id, long friendId) {
+        if ((findUserById(id) == null) || (findUserById(friendId) == null)) {
+            return false;
+        }
+        User friendRequest = userStorage.findUserById(id).get();
+        User friendResponse = userStorage.findUserById(friendId).get();
+        friendStorage.addInFriends(friendRequest, friendResponse);
+        return true;
     }
+
+    public boolean deleteFromFriends(long id, long friendId) {
+        if ((findUserById(id) == null) || (findUserById(friendId) == null)) {
+            return false;
+        }
+        User friendRequest = userStorage.findUserById(id).get();
+        User friendResponse = userStorage.findUserById(friendId).get();
+        friendStorage.deleteFromFriends(friendRequest, friendResponse);
+        return true;
+    }
+
+    public List<User> findFriends(long id) {
+        if (findUserById(id) == null) {
+            return Collections.EMPTY_LIST;
+        }
+        return friendStorage.findFriends(id).stream()
+                .map(this::findUserById)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> findMutualFriends(long id, long otherId) {
+        if ((findUserById(id) == null) || (findUserById(otherId) == null)) {
+            return Collections.EMPTY_LIST;
+        }
+        return findFriends(id).stream()
+                .filter(f -> findFriends(otherId).contains(f))
+                .collect(Collectors.toList());
+    }
+
 }
