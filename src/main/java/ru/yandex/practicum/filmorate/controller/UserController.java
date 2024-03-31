@@ -1,50 +1,61 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+
+import java.util.*;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @RestController
-@Slf4j
 @RequestMapping("/users")
+@Slf4j
+@Validated
+@RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") Integer id) {
-        return userService.getUserById(id);
-    }
-
-    @GetMapping("/{id}/friends")
-    public ArrayList<User> getFriendsById(@PathVariable("id") Integer id) {
-        return userService.getFriendsById(id);
-    }
-
-    @GetMapping
-    public Collection<User> getAllUsers() {
-        return userService.getUsers();
-    }
-
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+    @Validated
+    public User create(@Valid @RequestBody User user) {
+        User newUser = userService.create(user);
+        log.debug("Добавлен новый пользователь");
+        return newUser;
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) {
-        return userService.updateUser(user);
+    @Validated
+    public User update(@Valid @RequestBody User user) {
+        User newUser = userService.update(user);
+        log.debug("Обновлен пользователь");
+        return newUser;
+    }
+
+    @DeleteMapping
+    @Validated
+    public void delete(@Valid @RequestBody User user) {
+        userService.delete(user);
+        log.debug("Удалён пользователь: {}", user);
+    }
+
+    @GetMapping
+    public List<User> findUsers() {
+        List<User> users = userService.findUsers();
+        log.debug("Получен список пользователей");
+        return users;
+    }
+
+    @GetMapping("/{userId}")
+    public User findUserById(@PathVariable long userId) {
+        User user = userService.findUserById(userId);
+        log.debug("Получен пользователь");
+        return user;
     }
 
 }
