@@ -37,11 +37,13 @@ public class Film {
     private int rate;
     private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new TreeSet<>(Comparator.comparingLong(Genre::getId));
+
     @JsonSetter
-    public  void setGenres(Set<Genre> genres){
+    public void setGenres(Set<Genre> genres) {
         this.genres.clear();
         this.genres.addAll(genres);
     }
+
     private MPA mpa;
 
 }
