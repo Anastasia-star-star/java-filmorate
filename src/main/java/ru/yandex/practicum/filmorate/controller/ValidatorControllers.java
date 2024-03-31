@@ -15,21 +15,13 @@ public class ValidatorControllers {
 
     public static Film validateFilm(Film film) {
         ValidatorControllers.validateName(film.getName());
-        ValidatorControllers.validateDescription(film.getDescription());
         ValidatorControllers.validateReleaseDate(film.getReleaseDate());
-        ValidatorControllers.validateDuration(film.getDuration());
         return film;
     }
 
     private static void validateName(String name) {
-        if (name.isEmpty() || name.isBlank()) {
+        if (name.isBlank()) {
             logAndError("Ошибка! Название не может быть пустым.");
-        }
-    }
-
-    private static void validateDescription(String description) {
-        if (description.length() > 200) {
-            logAndError("Ошибка! Максимальная длина описания — 200 символов.");
         }
     }
 
@@ -39,14 +31,7 @@ public class ValidatorControllers {
         }
     }
 
-    private static void validateDuration(int duration) {
-        if (duration < 0) {
-            logAndError("Ошибка! Продолжительность фильма должна быть положительной.");
-        }
-    }
-
     public static User validateUser(User user) {
-        ValidatorControllers.validateEmail(user.getEmail());
         ValidatorControllers.validateLogin(user.getLogin());
         user = validateUserName(user);
         ValidatorControllers.validateBirthday(user.getBirthday());
@@ -54,20 +39,14 @@ public class ValidatorControllers {
     }
 
     private static User validateUserName(User user) {
-        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
         return user;
     }
 
-    private static void validateEmail(String email) {
-        if (email.isEmpty() || email.isBlank() || !email.contains("@")) {
-            logAndError("Ошибка! Неверный e-mail.");
-        }
-    }
-
     private static void validateLogin(String login) {
-        if (login.isEmpty() || login.isBlank() || login.contains(" ")) {
+        if (login.contains(" ")) {
             logAndError("Ошибка! Логин не может быть пустым и содержать пробелы.");
         }
     }

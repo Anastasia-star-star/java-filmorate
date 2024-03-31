@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.storage;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -56,6 +56,9 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     public Optional<Film> update(Film film) {
+        if (findFilmById(film.getId()) == null) {
+            return null;
+        }
         String sqlQuery = "update films set film_name = ?, description = ?, release_date = ?, " +
                 "duration = ?, rate = ?, rating_mpa_id = ? where film_id = ?";
         jdbcTemplate.update(sqlQuery, film.getName(), film.getDescription(), film.getReleaseDate(),
@@ -104,12 +107,12 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
-    public List<MPA> findRatingMPAs() {
+    public List<Mpa> findRatingMPAs() {
         String sqlQuery = "select * from rating_mpa";
         return jdbcTemplate.query(sqlQuery, this::makeRatingMPA);
     }
 
-    public Optional<MPA> findRatingMPAById(long ratingMPAId) {
+    public Optional<Mpa> findRatingMPAById(long ratingMPAId) {
         String sqlQuery = "select * from rating_mpa where rating_mpa_id = ?";
         try {
             return Optional.of(jdbcTemplate.queryForObject(sqlQuery, this::makeRatingMPA, ratingMPAId));
@@ -162,8 +165,8 @@ public class FilmDbStorage implements FilmStorage {
         return new Genre(rs.getLong("genre_id"), rs.getString("genre_name"));
     }
 
-    private MPA makeRatingMPA(ResultSet rs, int rowNum) throws SQLException {
-        return new MPA(rs.getLong("rating_mpa_id"),
+    private Mpa makeRatingMPA(ResultSet rs, int rowNum) throws SQLException {
+        return new Mpa(rs.getLong("rating_mpa_id"),
                 rs.getString("rating_mpa_name"), rs.getString("description"));
     }
 

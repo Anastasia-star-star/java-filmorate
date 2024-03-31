@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import ru.yandex.practicum.filmorate.controller.ValidatorControllers;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FriendStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -11,23 +12,22 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    @Qualifier("userDbStorage")
     private final UserStorage userStorage;
-    @Qualifier("friendDbStorage")
     private final FriendStorage friendStorage;
 
     public User create(User user) {
+        user = ValidatorControllers.validateUser(user);
         return userStorage.create(user).get();
     }
 
     public User update(User user) {
+        user = ValidatorControllers.validateUser(user);
         if (findUserById(user.getId()) == null) {
             return null;
         }

@@ -54,3 +54,5 @@ CREATE TABLE IF NOT EXISTS likes (
     film_id bigint REFERENCES public.films(film_id) ON UPDATE RESTRICT ON DELETE CASCADE,
     CONSTRAINT LIKES_PK PRIMARY KEY (user_id, film_id)
 );
+create unique index if not exists USER_EMAIL_UINDEX on USERS (email);
+create unique index if not exists USER_LOGIN_UINDEX on USERS (login);

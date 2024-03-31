@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.service;
 
+import ru.yandex.practicum.filmorate.controller.ValidatorControllers;
 import ru.yandex.practicum.filmorate.exception.GenreNotFoundException;
 import ru.yandex.practicum.filmorate.exception.MPANotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.LikeStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -23,21 +25,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @RequiredArgsConstructor
 public class FilmService {
 
-    @Qualifier("filmDbStorage")
     private final FilmStorage filmStorage;
-    @Qualifier("userDbStorage")
     private final UserStorage userStorage;
-    @Qualifier("likeDbStorage")
     private final LikeStorage likeStorage;
 
     public Film create(Film film) {
+        film = ValidatorControllers.validateFilm(film);
         return filmStorage.create(film).get();
     }
 
     public Film update(Film film) {
-        if (findFilmById(film.getId()) == null) {
-            return null;
-        }
+        ValidatorControllers.validateFilm(film);
         return filmStorage.update(film).get();
     }
 
@@ -81,10 +79,17 @@ public class FilmService {
         return true;
     }
 
-    public List<Film> findPopularFilms(int count) {
+    public List<Film> findPopularFilms(String count) {
+        int countInt = Integer.parseInt(count);
+        if (countInt < 0) {
+            String message = "Параметр count не может быть отрицательным!";
+            log.warn(message);
+            throw new ValidationException(message);
+        }
+
         return findFilms().stream()
                 .sorted(this::compare)
-                .limit(count)
+                .limit(countInt)
                 .collect(Collectors.toList());
     }
 
@@ -100,11 +105,11 @@ public class FilmService {
                 });
     }
 
-    public List<MPA> findRatingMPAs() {
+    public List<Mpa> findRatingMPAs() {
         return filmStorage.findRatingMPAs();
     }
 
-    public MPA findRatingMPAById(long ratingMPAId) {
+    public Mpa findRatingMPAById(long ratingMPAId) {
         return filmStorage.findRatingMPAById(ratingMPAId)
                 .orElseThrow(() -> {
                     log.warn("Рейтинг МПА № {} не найден", ratingMPAId);

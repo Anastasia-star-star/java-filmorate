@@ -6,11 +6,9 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
 public class FriendDbStorage implements FriendStorage {
 

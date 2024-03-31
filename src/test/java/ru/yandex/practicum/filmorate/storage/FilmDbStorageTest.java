@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ class FilmDbStorageTest {
 
     @BeforeEach
     public void beforeEach() {
-        MPA ratingMPA3 = new MPA(3L, "PG-13", "детям до 13 лет просмотр не желателен");
-        MPA ratingMPA4 = new MPA(4L, "R",
+        Mpa ratingMpa3 = new Mpa(3L, "PG-13", "детям до 13 лет просмотр не желателен");
+        Mpa ratingMpa4 = new Mpa(4L, "R",
                 "лицам до 17 лет просматривать фильм можно только в присутствии взрослого");
         Genre genre1 = new Genre(1L, "Комедия");
         Genre genre2 = new Genre(2L, "Драма");
@@ -46,17 +46,17 @@ class FilmDbStorageTest {
                 LocalDate.of(2000, 01, 01));
         film1.setDuration(180);
         film1.setGenres(Set.of(genre1, genre2, genre5));
-        film1.setMpa(ratingMPA4);
+        film1.setMpa(ratingMpa4);
         film2 = new Film("film 2", "FIlm 2 description",
                 LocalDate.of(2010, 02, 22));
         film2.setDuration(122);
         film2.setGenres(Set.of(genre2));
-        film2.setMpa(ratingMPA3);
+        film2.setMpa(ratingMpa3);
         film3 = new Film("film 1", "FIlm 1 description",
                 LocalDate.of(2020, 03, 31));
         film3.setDuration(209);
         film3.setGenres(Set.of(genre1, genre5));
-        film3.setMpa(ratingMPA4);
+        film3.setMpa(ratingMpa4);
     }
 
     @Test

@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -37,13 +37,13 @@ class LikeDbStorageTest {
     private User user2;
     private User user3;
     private User user4;
-    private MPA ratingMPA3;
+    private Mpa ratingMpa3;
     private Genre genre1;
     private Genre genre2;
 
     @BeforeEach
     public void beforeEach() {
-        ratingMPA3 = new MPA(3L, "PG-13", "детям до 13 лет просмотр не желателен");
+        ratingMpa3 = new Mpa(3L, "PG-13", "детям до 13 лет просмотр не желателен");
         genre1 = new Genre(1L, "Комедия");
         genre2 = new Genre(2L, "Драма");
         film1 = new Film("film 1", "FIlm 1 description",
@@ -51,7 +51,7 @@ class LikeDbStorageTest {
         film1.setDuration(180);
         film1.setLikes(Set.of(1L, 3L, 4L));
         film1.setGenres(Set.of(genre1, genre2));
-        film1.setMpa(ratingMPA3);
+        film1.setMpa(ratingMpa3);
         user1 = new User("email1@mail.ru", "user1", LocalDate.of(1980, 01, 01));
         user1.setName("User 1 name");
         user2 = new User("email2@mail.ru", "user2", LocalDate.of(1981, 02, 02));

@@ -1,17 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -25,11 +24,15 @@ public class Film {
     private String name;
 
     @NonNull
+    @Size(max = 200)
     private String description;
 
     @NonNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
+
+    @NotNull
+    private Mpa mpa;
 
     @Positive(message = "Ошибка! Продолжительность фильма должна быть положительной.")
     private int duration;
@@ -43,7 +46,5 @@ public class Film {
         this.genres.clear();
         this.genres.addAll(genres);
     }
-
-    private MPA mpa;
 
 }
